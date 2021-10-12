@@ -8,6 +8,6 @@ docker images | grep -E "^$image_name " | grep " $image_tag "
 echo "Image already exists"
 } || {
 echo "Image does no exists"
-echo docker build -t $image .
-docker build -t $image .
+echo docker build -t $image ..
+docker build -t $image ..
 }

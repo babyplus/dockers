@@ -44,8 +44,7 @@
 
 [test]
 
-127.0.0.1 ansible_ssh_private_key_file=/etc/ansible/keys/my_archlinux_key ansible_ssh_user=vagrant
+127.0.0.1     ansible_ssh_private_key_file=/etc/ansible/keys/my_archlinux_key ansible_ssh_user=vagrant
 192.168.184.1 ansible_ssh_private_key_file=/etc/ansible/keys/my_ubuntu_key ansible_ssh_user=plus ansible_ssh_port=12230
-192.168.184.2 ansible_ssh_private_key_file=/etc/ansible/keys/my_ubuntu_key ansible_ssh_user=plus ansible_ssh_port=12232
-
+192.168.56.102  ansible_ssh_private_key_file=/etc/ansible/keys/my_ubuntu_key ansible_ssh_user=plus  ansible_ssh_common_args="-o ProxyCommand=\"ssh -p12230 -W %h:%p -q plus@192.168.184.1\" "
 
