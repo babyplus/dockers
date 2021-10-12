@@ -1,0 +1,7 @@
+---
+- hosts: test
+  tasks:
+  - name: Example from an Ansible Playbook
+    ping:
+        data:
+            pang
