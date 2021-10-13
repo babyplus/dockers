@@ -10,4 +10,10 @@
   gather_facts: no
   tasks:
   - shell: ping {{ item }} -c 1 -W 1.5
+    register: "pong"
     with_items: "{{ peers }}"
+    ignore_errors: true
+  - shell: 'echo \"`date "+%Y%m%d_%H%M%S"`\": >>/tmp/test.txt'
+    register: "time"
+  - shell: "echo \"    - { {{ item.item }}: { rc: {{ item.rc }} } }\" >>/tmp/test.txt"
+    with_items: "{{ pong.results }}"
