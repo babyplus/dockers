@@ -42,9 +42,12 @@
 
 #db-[99:101]-node.example.com
 
+[master]
+127.0.0.1       ansible_ssh_private_key_file=/etc/ansible/keys/my_archlinux_key ansible_ssh_user=vagrant
+
 [test]
 
-127.0.0.1     ansible_ssh_private_key_file=/etc/ansible/keys/my_archlinux_key ansible_ssh_user=vagrant
-192.168.184.1 ansible_ssh_private_key_file=/etc/ansible/keys/my_ubuntu_key ansible_ssh_user=plus ansible_ssh_port=12230
-192.168.56.102  ansible_ssh_private_key_file=/etc/ansible/keys/my_ubuntu_key ansible_ssh_user=plus  ansible_ssh_common_args="-o ProxyCommand=\"ssh -p12230 -W %h:%p -q plus@192.168.184.1\" "
+127.0.0.1       ansible_ssh_private_key_file=/etc/ansible/keys/my_archlinux_key ansible_ssh_user=vagrant
+192.168.56.1    ansible_ssh_private_key_file=/etc/ansible/keys/my_ubuntu_key1 ansible_ssh_user=plus ansible_ssh_port=22221
+1.1.1.2   ansible_ssh_private_key_file=/etc/ansible/keys/my_ubuntu_key2 ansible_ssh_user=plus  ansible_ssh_common_args="-o ProxyCommand=\"ssh -i /etc/ansible/keys/my_ubuntu_key1 -p22221 -W %h:%p -q plus@192.168.56.1\" "
 
