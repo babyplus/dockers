@@ -13,7 +13,7 @@
     register: "pong"
     with_items: "{{ peers }}"
     ignore_errors: true
-  - shell: 'echo \"`date "+%Y%m%d_%H%M%S"`\": >>/tmp/test.txt'
-    register: "time"
+  - shell: 'echo "- \"time\": \"`date "+%Y%m%d_%H%M%S"`\"" >>/tmp/test.txt'
+  - shell: 'echo "  \"result\":" >>/tmp/test.txt'
   - shell: "echo \"    - { {{ item.item }}: { rc: {{ item.rc | quote }}, ping_time: \\\"{{ item.stdout_lines[1] | regex_search(\"time=.*ms\") |replace(\"time=\",\"\") }}\\\" } }\" >>/tmp/test.txt"
     with_items: "{{ pong.results }}"
