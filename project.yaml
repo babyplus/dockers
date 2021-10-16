@@ -1,0 +1,81 @@
+swagger: "2.0"
+info:
+  description: "ping"
+  version: "1.0.0"
+  title: "ping"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "495031718@qq.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "127.0.0.1"
+basePath: "/v2"
+tags:
+- name: "ping"
+  description: "ping"
+schemes:
+- "https"
+- "http"
+paths:
+  /ping/getResults:
+    get:
+      tags:
+      - "ping"
+      summary: "get results"
+      description: "get results"
+      operationId: "pingResultsGet"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "status"
+        in: "query"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "all"
+          - "successed"
+          - "failed"
+          default: "available"
+        collectionFormat: "multi"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/PingResults"
+        "400":
+          description: "Invalid status value"
+definitions:
+  PingResult:
+    type: "object"
+    properties:
+      rc:
+        type: "integer"
+        format: "int64"
+      ping_time:
+        type: "string"
+    xml:
+      name: "PingResult"
+  PingResults:
+    type: "array"
+    properties:
+      time:
+        type: "string"
+      result:
+        type: "object"
+        xml:
+          name: "PingResult"
+          wrapped: true
+        $ref: "#/definitions/PingResult"
+    xml:
+      name: "PingResults"
+
+externalDocs:
+  description: "Find out more about tools"
+  url: "https://github.com/babyplus/dockers"
