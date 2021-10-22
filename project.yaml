@@ -40,7 +40,7 @@ paths:
           - "all"
           - "successed"
           - "failed"
-          default: "available"
+          default: "all"
         collectionFormat: "multi"
       responses:
         "200":
@@ -60,6 +60,8 @@ definitions:
         format: "int64"
       ping_time:
         type: "string"
+      host:
+        type: "string"
     xml:
       name: "PingResult"
   PingResults:
@@ -67,15 +69,12 @@ definitions:
     properties:
       time:
         type: "string"
-      result:
-        type: "object"
-        xml:
-          name: "PingResult"
-          wrapped: true
-        $ref: "#/definitions/PingResult"
+      results:
+        type: "array"
+        items:
+          $ref: "#/definitions/PingResult"
     xml:
       name: "PingResults"
-
 externalDocs:
   description: "Find out more about tools"
   url: "https://github.com/babyplus/dockers"
