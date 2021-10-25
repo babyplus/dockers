@@ -49,4 +49,4 @@ if __name__ == '__main__':
             get_file_content()
             get_temp_content()
             save()
-            print("modified {}".format(g_file))
+            print("{} modified.".format(g_file))

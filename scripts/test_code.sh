@@ -25,6 +25,3 @@ project="project"
 # run
 cd $path/$project
 docker run -v $data_file:$data_file -v $path/$project/openapi_server:/usr/src/app/openapi_server -p 8080:8080 $docker_image
-
-#go back to the scripts` dir
-cd $path/scripts

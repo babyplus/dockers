@@ -2,5 +2,5 @@
 
 ```
 cd scripts
-bash generate.sh
+bash run.sh
 ```
