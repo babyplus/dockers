@@ -1,0 +1,63 @@
+title:
+  text: Line Graph
+  subtext: Subtitle
+tooltip:
+  trigger: axis
+legend:
+  x: 220
+  y: 40
+  selectedMode: 'single'
+  data:
+    - Deal
+toolbox:
+  show: true
+  feature:
+    magicType:
+      show: true
+      title:
+        line: Line
+        bar: Bar
+        stack: Stack
+        tiled: Tiled
+      type:
+        - line
+        - bar
+        - stack
+        - tiled
+    restore:
+      show: true
+      title: Restore
+    saveAsImage:
+      show: true
+      title: Save Image
+calculable: true
+xAxis:
+  - type: category
+    boundaryGap: false
+    data:
+      - Mon
+      - Tue
+      - Wed
+      - Thu
+      - Fri
+      - Sat
+      - Sun
+yAxis:
+  - type: value
+series:
+  - name: Deal
+    type: line
+    smooth: true
+    itemStyle:
+      normal:
+        areaStyle:
+          type: default
+    data:
+      - 10
+      - 12
+      - 21
+      - 54
+      - 260
+      - 830
+      - 710
+

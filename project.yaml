@@ -10,14 +10,44 @@ info:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 host: "127.0.0.1"
-basePath: "/v2"
+basePath: "/api"
 tags:
+- name: "json"
+  description: "json"
 - name: "ping"
   description: "ping"
 schemes:
 - "https"
 - "http"
 paths:
+  /json/getStr:
+    get:
+      tags:
+      - "json"
+      summary: "get json string"
+      description: "get json string"
+      operationId: "jsonStringGet"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "query"
+        in: "query"
+        description: "type that need to be considered for filter"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "echart_line"
+          default: "echart_line"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "string"
+        "400":
+          description: "Invalid status value"
   /ping/getResults:
     get:
       tags:

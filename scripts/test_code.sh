@@ -1,4 +1,5 @@
-data_file="/tmp/test.txt"
+mount_path="/tmp"
+data_file="$mount_path/test.txt"
 path="`pwd`"
 path=${path%/*}
 docker_image=openapi_server
@@ -8,20 +9,26 @@ project="project"
     echo "$data_file is existed."
 }||{
     echo "$data_file is not existed, create mock data..."
-    echo '- "time": "20211022_025518"' >> $data_file
-    echo '  "results":' >> $data_file
-    echo '    - { host: 127.0.0.1,  rc: 0, ping_time: "0.685 ms"  }' >> $data_file
-    echo '    - { host: 192.168.56.1,  rc: 0, ping_time: "1.62 ms"  }' >> $data_file
-    echo '    - { host: 1.1.2.3,  rc: 1, ping_time: "None"  }' >> $data_file
-    echo '    - { host: 1.1.1.2,  rc: 0, ping_time: "272 ms"  }' >> $data_file
-    echo '- "time": "20211022_025539"' >> $data_file
-    echo '  "results":' >> $data_file
-    echo '    - { host: 127.0.0.1,  rc: 0, ping_time: "0.128 ms"  }' >> $data_file
-    echo '    - { host: 192.168.56.1,  rc: 0, ping_time: "0.919 ms"  }' >> $data_file
-    echo '    - { host: 1.1.2.3,  rc: 1, ping_time: "None"  }' >> $data_file
-    echo '    - { host: 1.1.1.2,  rc: 0, ping_time: "248 ms"  }' >> $data_file
+    time="100000"
+    date=`date +%Y%m%d`
+    for n in {0..1000};
+    do
+        echo '- "time": "'${date}_${time}'"' >> $data_file
+        echo '  "results":' >> $data_file
+        for i in {1..10};
+        do
+            random0=$((RANDOM%1))
+            random1=$((RANDOM%100+1))
+            ping_time=`echo $random0.$random1 ms`
+            echo '    - { host: 192.168.99.'$i',  rc: 0, ping_time: "'$ping_time'"  }' >> $data_file
+        done
+        time=$(($time+10))
+    done
 }
+
+mkdir -p $mount_path/yaml
+cp -r $path/scripts/yaml/* $mount_path/yaml
 
 # run
 cd $path/$project
-docker run -v $data_file:$data_file -v $path/$project/openapi_server:/usr/src/app/openapi_server -p 8080:8080 $docker_image
+docker run -v $mount_path:/tmp -v $path/$project/openapi_server:/usr/src/app/openapi_server -p 8080:8080 $docker_image
