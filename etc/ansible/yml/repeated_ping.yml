@@ -20,3 +20,5 @@
         - "{{ cycle_control }}"
         - "{{ cycle_control }}"
         - "{{ cycle_control }}"
+    loop_control:
+        loop_var: round
