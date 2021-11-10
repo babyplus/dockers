@@ -10,5 +10,5 @@ file: etc/ansible/hosts
 
 ```
 cd scripts
-bash ping.sh
+bash repeated_ping.sh
 ```
