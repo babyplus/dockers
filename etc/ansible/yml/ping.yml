@@ -3,9 +3,9 @@
     register: "pong"
     with_items: "{{ peers }}"
     ignore_errors: true
-  - shell: 'echo "- \"time\": \"`date "+%Y%m%d_%H%M%S"`\"" >>/tmp/test.txt'
-  - shell: 'echo "  \"results\":" >>/tmp/test.txt'
-  - shell: "echo \"    - { host: {{ item.item }}, rc: {{ item.rc | quote }}, ping_time: \\\"{{ item.stdout_lines[1] | regex_search(\"time=.*s\") |replace(\"time=\",\"\") }}\\\"  }\" >>/tmp/test.txt"
+  - shell: 'echo "- \"time\": \"`date "+%Y%m%d_%H%M%S"`\"" >>{{ result_file }}'
+  - shell: 'echo "  \"results\":" >>{{ result_file }}'
+  - shell: "echo \"    - { host: {{ item.item }}, rc: {{ item.rc | quote }}, ping_time: \\\"{{ item.stdout_lines[1] | regex_search(\"time=.*s\") |replace(\"time=\",\"\") }}\\\"  }\" >>{{ result_file }}"
     with_items: "{{ pong.results }}"
   - pause:
       seconds: "20"

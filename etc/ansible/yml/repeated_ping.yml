@@ -13,6 +13,7 @@
         - 2
         - 3
         - 4
+    result_file: "/tmp/test.txt"
   gather_facts: no
   tasks:
   - include: ping.yml
