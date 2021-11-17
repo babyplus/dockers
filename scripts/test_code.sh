@@ -1,5 +1,5 @@
 mount_path="/tmp"
-data_file="$mount_path/test.txt"
+data_file="$mount_path/test_`date +%Y%m%d`.txt"
 path="`pwd`"
 path=${path%/*}
 docker_image=openapi_server

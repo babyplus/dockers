@@ -59,18 +59,13 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: "status"
+      - name: "date"
         in: "query"
         description: "Status values that need to be considered for filter"
         required: true
         type: "array"
         items:
           type: "string"
-          enum:
-          - "all"
-          - "successed"
-          - "failed"
-          default: "all"
         collectionFormat: "multi"
       responses:
         "200":
