@@ -1,9 +1,15 @@
 ---
+  - set_fact:
+      current_time: "{{ lookup('pipe', 'date +%Y%m%d_%H%M%S') }}"
+  - set_fact:
+      date: "{{ current_time.split(\"_\") }}"
+  - set_fact:
+      result_file: "{{ result_file_prefix }}{{ date[0] }}.txt"
   - shell: ping {{ item }} -c 1 -W 1.5
     register: "pong"
     with_items: "{{ peers }}"
     ignore_errors: true
-  - shell: 'echo "- \"time\": \"`date "+%Y%m%d_%H%M%S"`\"" >>{{ result_file }}'
+  - shell: 'echo "- \"time\": \"{{ current_time }}\"" >>{{ result_file }}'
   - shell: 'echo "  \"results\":" >>{{ result_file }}'
   - shell: "echo \"    - { host: {{ item.item }}, rc: {{ item.rc | quote }}, ping_time: \\\"{{ item.stdout_lines[1] | regex_search(\"time=.*s\") |replace(\"time=\",\"\") }}\\\"  }\" >>{{ result_file }}"
     with_items: "{{ pong.results }}"

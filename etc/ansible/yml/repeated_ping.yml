@@ -13,7 +13,10 @@
         - 2
         - 3
         - 4
-    result_file: "/tmp/test.txt"
+    current_time: ""
+    date: ""
+    result_file_prefix: "/tmp/test_"
+    result_file: ""
   gather_facts: no
   tasks:
   - include: ping.yml
