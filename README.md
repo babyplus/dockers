@@ -4,20 +4,22 @@
 
 ### modify hosts file  
 
+Use SSH to connect to the hosts.  
+
 * file: etc/ansible/hosts  
 
-### modify peers  
+### set the peers  
 
 * file:   etc/ansible/yml/repeated_ping.config  
 * value:  peers  
 
-### modify the path of result  
+### set the path of result  
 
 * file:    etc/ansible/yml/repeated_ping.config  
 * value:   result_file_path  
 * default: /tmp  
 
-### modify the interval  
+### set the interval  
 
 * file:    etc/ansible/yml/repeated_ping.config  
 * value:   ping_interval  
