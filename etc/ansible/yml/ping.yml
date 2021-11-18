@@ -2,9 +2,9 @@
   - set_fact:
       current_time: "{{ lookup('pipe', 'date +%Y%m%d_%H%M%S') }}"
   - set_fact:
-      date: "{{ current_time.split(\"_\") }}"
+      date: "{{ current_time.split(\"_\")[0] }}"
   - set_fact:
-      result_file: "{{ result_file_prefix }}{{ date[0] }}.txt"
+      result_file: "{{ result_file_path }}/{{ result_file_prefix }}{{ date }}.txt"
   - shell: ping {{ item }} -c 1 -W 1.5
     register: "pong"
     with_items: "{{ peers }}"

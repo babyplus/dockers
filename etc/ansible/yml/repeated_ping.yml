@@ -7,22 +7,15 @@
         - 192.168.56.1
         - 1.1.2.3
         - 1.1.1.2
-    cycle_control:
-        - 0
-        - 1
-        - 2
-        - 3
-        - 4
+    cycle_control: "[{{ lookup(\"sequence\", \"5\") }}]"
     current_time: ""
     date: ""
-    result_file_prefix: "/tmp/test_"
-    result_file: ""
+    result_file_path: "/tmp"
+    result_file_prefix: "test_"
+    result_file: "" # Change dynamically via date
   gather_facts: no
   tasks:
   - include: ping.yml
-    with_nested:
-        - "{{ cycle_control }}"
-        - "{{ cycle_control }}"
-        - "{{ cycle_control }}"
+    loop: "{{ cycle_control }}"
     loop_control:
         loop_var: round
