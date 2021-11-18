@@ -4,7 +4,7 @@
 
 ### modify hosts file  
 
-Use SSH to connect to the hosts.  
+Modify the master group as appropriate to connect to the hosts via SSH.  
 
 * file: etc/ansible/hosts  
 
