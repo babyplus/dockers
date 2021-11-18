@@ -1,18 +1,8 @@
 ---
 
 - hosts: master
-  vars:
-    peers:
-        - 127.0.0.1
-        - 192.168.56.1
-        - 1.1.2.3
-        - 1.1.1.2
-    cycle_control: "[{{ lookup(\"sequence\", \"5\") }}]"
-    current_time: ""
-    date: ""
-    result_file_path: "/tmp"
-    result_file_prefix: "test_"
-    result_file: "" # Change dynamically via date
+  vars_files:
+  - repeated_ping.config
   gather_facts: no
   tasks:
   - include: ping.yml

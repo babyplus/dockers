@@ -14,4 +14,4 @@
   - shell: "echo \"    - { host: {{ item.item }}, rc: {{ item.rc | quote }}, ping_time: \\\"{{ item.stdout_lines[1] | regex_search(\"time=.*s\") |replace(\"time=\",\"\") }}\\\"  }\" >>{{ result_file }}"
     with_items: "{{ pong.results }}"
   - pause:
-      seconds: "20"
+      seconds: "{{ ping_interval }}"
