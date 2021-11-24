@@ -27,7 +27,14 @@ Modify the master group as appropriate to connect to the hosts via SSH.
 
 ## scripts  
 
-### ping test     
+### ping test   
+
+```
+cd scripts  
+bash repeated_ping.sh  
+```
+
+### ping test daemon    
 
 ```
 cd scripts  

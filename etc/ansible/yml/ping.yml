@@ -10,8 +10,10 @@
     with_items: "{{ peers }}"
     ignore_errors: true
   - shell: 'echo "- \"time\": \"{{ current_time }}\"" >>{{ result_file }}'
+  - shell: 'echo "- \"time\": \"{{ current_time }}\"" > {{ latest_result_file }}'
   - shell: 'echo "  \"results\":" >>{{ result_file }}'
-  - shell: "echo \"    - { host: {{ item.item }}, rc: {{ item.rc | quote }}, ping_time: \\\"{{ item.stdout_lines[1] | regex_search(\"time=.*s\") |replace(\"time=\",\"\") }}\\\"  }\" >>{{ result_file }}"
+  - shell: 'echo "  \"results\":" >>{{ latest_result_file }}'
+  - shell: "echo \"    - { host: {{ item.item }}, rc: {{ item.rc | quote }}, ping_time: \\\"{{ item.stdout_lines[1] | regex_search(\"time=.*s\") |replace(\"time=\",\"\") }}\\\"  }\" >>{{ result_file }} ;echo \"    - { host: {{ item.item }}, rc: {{ item.rc | quote }}, ping_time: \\\"{{ item.stdout_lines[1] | regex_search(\"time=.*s\") |replace(\"time=\",\"\") }}\\\"  }\" >>{{ latest_result_file }}"
     with_items: "{{ pong.results }}"
   - pause:
       seconds: "{{ ping_interval }}"
