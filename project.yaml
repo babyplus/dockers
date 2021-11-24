@@ -76,6 +76,25 @@ paths:
               $ref: "#/definitions/PingResults"
         "400":
           description: "Invalid status value"
+  /ping/getLatestResult:
+    get:
+      tags:
+      - "ping"
+      summary: "get the latest result"
+      description: "get the latest result"
+      operationId: "pingLatestResultGet"
+      produces:
+      - "application/xml"
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/PingResult"
+        "400":
+          description: "Invalid status value"
 definitions:
   PingResult:
     type: "object"

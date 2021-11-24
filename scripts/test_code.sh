@@ -1,5 +1,6 @@
 mount_path="/tmp"
 data_file="$mount_path/test_`date +%Y%m%d`.txt"
+latest_data_file="$mount_path/test_latest.txt"
 path="`pwd`"
 path=${path%/*}
 docker_image=openapi_server
@@ -24,6 +25,7 @@ project="project"
         done
         time=$(($time+10))
     done
+    tail -12 $data_file > $latest_data_file
 }
 
 mkdir -p $mount_path/yaml
