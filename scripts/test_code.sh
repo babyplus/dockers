@@ -12,7 +12,7 @@ project="project"
     echo "$data_file is not existed, create mock data..."
     time="100000"
     date=`date +%Y%m%d`
-    for n in {0..1000};
+    for n in {0..10};
     do
         echo '- "time": "'${date}_${time}'"' >> $data_file
         echo '  "results":' >> $data_file
@@ -25,6 +25,8 @@ project="project"
         done
         time=$(($time+10))
     done
+    grep -o -e "ping_time.*ms" $data_file | sort | tail -20 | awk -v file=$data_file -F "\"" '{print "sed -i \"s/"$2"/None/g\" "file}' | bash
+    sed -i 's/rc: 0, ping_time: "None"/rc: 1, ping_time: "None"/g' $data_file
     tail -12 $data_file > $latest_data_file
 }
 
