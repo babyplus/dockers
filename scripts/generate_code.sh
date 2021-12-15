@@ -5,7 +5,7 @@ project="project"
 project_yaml=$project.yaml
 workdir="/local"
 
-# clear old
+# clean old
 rm -rf $path/$project
 
 # generate project
@@ -13,6 +13,9 @@ docker run --rm -v "${path}:$workdir" $docker_image generate -i $workdir/$projec
 
 # build project docker image
 cd $path/$project
+echo >> Dockerfile
+echo 'RUN apk add --no-cache bash' >> Dockerfile
+echo >> Dockerfile
 docker build -t openapi_server .
 
 #go back to the scripts` dir

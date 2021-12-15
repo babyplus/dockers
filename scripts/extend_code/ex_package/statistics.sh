@@ -52,7 +52,7 @@ process(){
     shift
     file=/tmp/$(($RANDOM*$RANDOM)).txt
     cat $@ > $file
-    grep -E $period -n $file |awk -v FILE=$file -F ":" '{ RESULT[NR]=$1 } END {print "sed -n "RESULT[1]+1","RESULT[2]-1"p "FILE}' | sh | grep "rc: 1" | awk '{a[$4]++}END{for (n in a) {print "\""n " " a[n]}}' | sed 's/,/":/g'
+    grep -E $period -n $file |awk -v FILE=$file -F ":" '{ RESULT[NR]=$1 } END {print "sed -n "RESULT[1]+1","RESULT[2]-1"p "FILE}' | bash | grep "rc: 1" | awk '{a[$4]++}END{for (n in a) {print "\""n " " a[n]}}' | sed 's/,/":/g'
     rm $file
 }
 
@@ -61,7 +61,7 @@ main(){
     echo 
     echo '    Usage:' $0 PERIOD 
     echo 
-    echo '      Example: sh' $0 '"20211214_100000|20211214_20000"' 
+    echo '      Example: bash' $0 '"20211214_100000|20211214_20000"' 
     echo 
     echo '    Notice: The script ignores the results of the latest round if the given period contains the latest time'
     echo 
