@@ -1,30 +1,98 @@
-# [root@archlinux ex_package]# bash statistics.sh "20211214_100000|20211215_20000" /tmp/test_20211214.txt /tmp/test_20211215.txt
-# "192.168.99.1": 194
-# "192.168.99.2": 211
-# "192.168.99.3": 216
-# "192.168.99.4": 201
-# "192.168.99.5": 197
-# "192.168.99.6": 200
-# "192.168.99.7": 212
-# "192.168.99.8": 226
-# "192.168.99.10": 213
-# "192.168.99.9": 176
 
-[ ! $# -lt 2 ] || {
-echo 
-echo '    Usage:' $0 PERIOD FILE1 [FILE2...]
-echo 
-echo '      Example1: sh' $0 '"20211214_100000|20211214_20000"' /tmp/test_20211214.txt
-echo '      Example2: sh' $0 '"20211214_100000|20211215_20000"' /tmp/test_20211214.txt /tmp/test_20211215.txt
-echo 
-echo '    Notice: The script ignores the results of the last round in the given period'
-echo 
-exit 1
+preprocess(){
+    begin=${1%%|*}
+    begin_date=${begin%%_*}
+    begin_time=${begin##*_}
+    end=${1##*|}
+    end_date=${end%%_*}
+    end_time=${end##*_}
 }
 
-period=$1
-shift
-file=/tmp/$(($RANDOM*$RANDOM)).txt
-cat $@ > $file
-grep -E $period -n $file |awk -v FILE=$file -F ":" '{ RESULT[NR]=$1 } END {print "sed -n "RESULT[1]+1","RESULT[2]-1"p "FILE}' | sh | grep "rc: 1" | awk '{a[$4]++}END{for (n in a) {print "\""n " " a[n]}}' | sed 's/,/":/g'
-rm $file
+get_files(){
+    [ 8 -ne `echo $1 | wc -c` ] || exit 2 
+    [ 8 -ne `echo $2 | wc -c` ] || exit 2 
+    seq=`seq $1 $2`
+    echo `for s in ${seq[@]} ; do echo "/tmp/test_"$s".txt"; done`
+}
+
+get_real_begin(){
+    real_times=( `grep -E "^- \"time\"" $1 | awk -F "_" '{gsub(/"/, "", $2);print $2}' | sort` )
+    ret=${real_times[0]}
+    for n in ${real_times[@]}
+    do
+    [ $3 -le $n ] && {
+        ret=$n
+        break
+    }
+    done
+    echo $2_$ret
+}
+
+get_real_end(){
+    real_times=( `grep -E "^- \"time\"" $1 | awk -F "_" '{gsub(/"/, "", $2);print $2}' | sort` )
+    ret=${real_times[-1]}
+    for n in ${real_times[@]}
+    do
+    [ $3 -lt $n ] && {
+        ret=$n
+        break
+    }
+    done
+    echo $2_$ret
+}
+
+get_period(){
+    real_begin=`get_real_begin $1 $2 $3`
+    real_end=`get_real_end $4 $5 $6`
+    echo "$real_begin|$real_end"
+}
+
+process(){
+    period=$1
+    shift
+    file=/tmp/$(($RANDOM*$RANDOM)).txt
+    cat $@ > $file
+    grep -E $period -n $file |awk -v FILE=$file -F ":" '{ RESULT[NR]=$1 } END {print "sed -n "RESULT[1]+1","RESULT[2]-1"p "FILE}' | sh | grep "rc: 1" | awk '{a[$4]++}END{for (n in a) {print "\""n " " a[n]}}' | sed 's/,/":/g'
+    rm $file
+}
+
+main(){
+    [ ! $# -lt 1 ] || {
+    echo 
+    echo '    Usage:' $0 PERIOD 
+    echo 
+    echo '      Example: sh' $0 '"20211214_100000|20211214_20000"' 
+    echo 
+    echo '    Notice: The script ignores the results of the latest round if the given period contains the latest time'
+    echo 
+    exit 1
+    }
+    begin=
+    begin_date=
+    begin_time=
+    end=
+    end_date=
+    end_time=
+    files=
+    primary_file=
+    latest_file=
+    period=
+    preprocess $@
+    files=`get_files $begin_date $end_date `
+    primary_file=`echo $files | awk '{print $1}' `
+    latest_file=`echo $files | awk '{print $NF}' `
+    period=`get_period $primary_file $begin_date $begin_time $latest_file $end_date $end_time `
+    process $period $files
+    # echo $begin
+    # echo $begin_date
+    # echo $begin_time
+    # echo $end
+    # echo $end_date
+    # echo $end_time
+    # echo $files
+    # echo $primary_file
+    # echo $latest_file
+    # echo $period
+}
+
+main $@

@@ -12,7 +12,7 @@ project="project"
     echo "$data_file is not existed, create mock data..."
     time="100000"
     date=`date +%Y%m%d`
-    for n in {0..10};
+    for n in {0..10000};
     do
         echo '- "time": "'${date}_${time}'"' >> $data_file
         echo '  "results":' >> $data_file
