@@ -16,6 +16,10 @@ cd $path/$project
 echo >> Dockerfile
 echo 'RUN apk add --no-cache bash' >> Dockerfile
 echo >> Dockerfile
+echo >> requirements.txt
+echo 'waitress >= 2.0.0' >> requirements.txt
+cat $path/scripts/customization/__main__.py > __main__.py
+cat $path/scripts/customization/__main__.py > openapi_server/__main__.py
 docker build -t openapi_server .
 
 #go back to the scripts` dir

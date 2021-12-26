@@ -12,7 +12,7 @@ project="project"
     echo "$data_file is not existed, create mock data..."
     time="100000"
     date=`date +%Y%m%d`
-    for n in {0..10000};
+    for n in {0..150};
     do
         echo '- "time": "'${date}_${time}'"' >> $data_file
         echo '  "results":' >> $data_file
@@ -35,4 +35,5 @@ cp -r $path/scripts/yaml/* $mount_path/yaml
 
 # run
 cd $path/$project
+echo "running..."
 docker run -v $mount_path:/tmp -v $path/$project/openapi_server:/usr/src/app/openapi_server -p 8080:8080 $docker_image

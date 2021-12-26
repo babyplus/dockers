@@ -52,7 +52,7 @@ process(){
     shift
     file=/tmp/$(($RANDOM*$RANDOM)).txt
     cat $@ > $file
-    grep -E $period -n $file |awk -v FILE=$file -F ":" '{ RESULT[NR]=$1 } END {print "sed -n "RESULT[1]+1","RESULT[2]-1"p "FILE}' | bash | grep "rc: 1" | awk '{a[$4]++}END{for (n in a) {print "\""n " " a[n]}}' | sed 's/,/":/g'
+    grep -E $period -n $file |awk -v FILE=$file -F ":" '{ RESULT[NR]=$1 } END {print "sed -n "RESULT[1]+1","RESULT[2]-1"p "FILE}' | bash | grep "ping_time" | awk '{a[$4]++;b[$4]=(""==b[$4]?0:b[$4]);if("1,"==$6){b[$4]++}}END{for (n in a) {print "\""n "\": {\"total\": \""a[n]"\", \"failed\": \""b[n]"\"}"}}'  | sed 's/,":/":/g'
     rm $file
 }
 
