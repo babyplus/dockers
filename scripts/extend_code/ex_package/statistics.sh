@@ -52,7 +52,7 @@ get_real_end(){
 
 get_period(){
     [ -f $1 -o -f $4 -o $7 ] || {
-        echo '{"error": "Incomplete data"}'
+        echo '{"Incomplete data": "Error: '$0::$LINENO'"}'
     }
     real_begin=`get_real_begin $1 $2 $3 $7`
     real_end=`get_real_end $4 $5 $6 $7`
@@ -66,16 +66,8 @@ generate_data(){
 }
 
 process(){
-    period=$1 # example: "20211214_100000|20211214_20000"
-#    [[ ! "$period" =~ ^[0-9]{8}_[0-9]{6}\|[0-9]{8}_[0-9]{6}$ ]] || {
-#        echo '{ "error": "Invalid format"}'
-#        exit 3
-#    }
-#    shift
-#    file=/tmp/$(($RANDOM*$RANDOM)).txt
-#    cat $@ > $file
+    period=$1
     grep -E $period -n $file |awk -v FILE=$file -F ":" '{ RESULT[NR]=$1 } END {print "sed -n "RESULT[1]+1","RESULT[2]-1"p "FILE}' | bash | grep "ping_time" | awk '{a[$4]++;b[$4]=(""==b[$4]?0:b[$4]);if("1,"==$6){b[$4]++}}END{for (n in a) {print "\""n "\": {\"total\": \""a[n]"\", \"failed\": \""b[n]"\"}"}}'  | sed 's/,":/":/g'
-#    rm $file
 }
 
 main(){
@@ -103,6 +95,10 @@ main(){
     preprocess $@
     files=`get_files $begin_date $end_date `
     file=`generate_data $files`
+    [[ ! -s $file ]] && {
+        echo '{"Data is empty": "Error: '$0::$LINENO'"}'
+        exit 4
+    }
     primary_file=`echo $files | awk '{print $1}' `
     latest_file=`echo $files | awk '{print $NF}' `
     period=`get_period $primary_file $begin_date $begin_time $latest_file $end_date $end_time $file`
