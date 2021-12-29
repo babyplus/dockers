@@ -1,5 +1,6 @@
 mount_path="/tmp"
-data_file="$mount_path/test_`date +%Y%m%d`.txt"
+date=`date +%Y%m%d`
+data_file="$mount_path/test_$date.txt"
 latest_data_file="$mount_path/test_latest.txt"
 path="`pwd`"
 path=${path%/*}
@@ -11,7 +12,6 @@ project="project"
 }||{
     echo "$data_file is not existed, create mock data..."
     time="100000"
-    date=`date +%Y%m%d`
     for n in {0..150};
     do
         echo '- "time": "'${date}_${time}'"' >> $data_file
@@ -29,6 +29,17 @@ project="project"
     sed -i 's/rc: 0, ping_time: "None"/rc: 1, ping_time: "None"/g' $data_file
     tail -12 $data_file > $latest_data_file
 }
+
+for i in {1..60}
+do
+    offset=`date +%Y%m%d -d "-${i}day"`
+    _data_file=`echo $data_file | sed s/$date/$offset/g`
+    [ -f $_data_file ] || {
+        echo "$_data_file is not exited, create mock data..."
+        cat $data_file >  $_data_file
+        sed -i "s/$date/$offset/g" $_data_file
+    }
+done
 
 mkdir -p $mount_path/yaml
 cp -r $path/scripts/yaml/* $mount_path/yaml
