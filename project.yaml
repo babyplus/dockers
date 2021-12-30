@@ -62,7 +62,7 @@ paths:
       parameters:
       - name: "date"
         in: "query"
-        description: "Status values that need to be considered for filter"
+        description: "values that need to be considered for filter, example: 20211215"
         required: true
         type: "array"
         items:
