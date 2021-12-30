@@ -109,12 +109,12 @@ paths:
       parameters:
       - name: "begin"
         in: "query"
-        description: "begin time, example: 20211214_100000"
+        description: "begin time, example: 20211214_100000 or 20211214"
         required: true
         type: "string"
       - name: "end"
         in: "query"
-        description: "end time, example: 20211215_100000"
+        description: "end time, example: 20211215_100000 or 20211215"
         required: true
         type: "string"
       responses:
