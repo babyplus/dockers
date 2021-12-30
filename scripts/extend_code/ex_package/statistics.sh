@@ -19,7 +19,7 @@ generate_ending(){
     shift
     ending_file=`echo $@ | awk '{print $NF}'`
     ending_file_temp=$ending_file.$(($RANDOM*$RANDOM))
-    cp $ending_file $ending_file_temp
+    cp $ending_file $ending_file_temp 2>/dev/null
     echo '- "time": "'$_end_date'_240000"' >> $ending_file_temp
     echo $ending_file_temp
 }
@@ -108,7 +108,7 @@ main(){
     latest_file_with_ending=`generate_ending $end_date $files`
     files=`echo $files | awk -v latest_file=$latest_file_with_ending '{$NF="";print $0 " " latest_file}'`
     file=`generate_data $files`
-    [[ ! -s $file ]] && {
+    [ 1 -eq `wc -l $file | awk '{print $1}'` ] && {
         echo '{"Data is empty": "Error: '$0::$LINENO'"}'
         exit 4
     }
