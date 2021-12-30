@@ -1,18 +1,20 @@
+export TZ="Asia/Shanghai"
 mount_path="/tmp"
 date=`date +%Y%m%d`
-data_file="$mount_path/test_$date.txt"
+today_data_file="$mount_path/test_$date.txt"
 latest_data_file="$mount_path/test_latest.txt"
+history_data_file=""
 path="`pwd`"
 path=${path%/*}
 docker_image=openapi_server
 project="project"
 
-[ -f $data_file ]&&{
-    echo "$data_file is existed."
-}||{
+create_mock_data(){
+    data_file=$1
+    date=$2
     echo "$data_file is not existed, create mock data..."
     time="100000"
-    for n in {0..150};
+    for n in {1..150};
     do
         echo '- "time": "'${date}_${time}'"' >> $data_file
         echo '  "results":' >> $data_file
@@ -27,17 +29,21 @@ project="project"
     done
     grep -o -e "ping_time.*ms" $data_file | sort | tail -20 | awk -v file=$data_file -F "\"" '{print "sed -i \"s/"$2"/None/g\" "file}' | bash
     sed -i 's/rc: 0, ping_time: "None"/rc: 1, ping_time: "None"/g' $data_file
-    tail -12 $data_file > $latest_data_file
+}
+
+[ -f $today_data_file ]&&{
+    echo "$today_data_file is existed."
+}||{
+    create_mock_data $today_data_file $date
+    tail -12 $today_data_file > $latest_data_file
 }
 
 for i in {1..60}
 do
     offset=`date +%Y%m%d -d "-${i}day"`
-    _data_file=`echo $data_file | sed s/$date/$offset/g`
-    [ -f $_data_file ] || {
-        echo "$_data_file is not exited, create mock data..."
-        cat $data_file >  $_data_file
-        sed -i "s/$date/$offset/g" $_data_file
+    history_data_file="$mount_path/test_$offset.txt"
+    [ -f $history_data_file ] || {
+        create_mock_data $history_data_file $offset
     }
 done
 

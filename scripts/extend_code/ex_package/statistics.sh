@@ -14,6 +14,16 @@ get_files(){
     echo `for s in ${seq[@]} ; do echo "/tmp/test_"$s".txt"; done`
 }
 
+generate_ending(){
+    _end_date=$1
+    shift
+    ending_file=`echo $@ | awk '{print $NF}'`
+    ending_file_temp=$ending_file.$(($RANDOM*$RANDOM))
+    cp $ending_file $ending_file_temp
+    echo '- "time": "'$_end_date'_240000"' >> $ending_file_temp
+    echo $ending_file_temp
+}
+
 get_real_begin(){
     real_times=( `grep -E "^- \"time\"" $1 2>/dev/null | awk -F "_" '{gsub(/"/, "", $2);print $2}' | sort` )
     ret=${real_times[0]}
@@ -72,14 +82,14 @@ process(){
 
 main(){
     [ ! $# -lt 1 ] || {
-    echo 
-    echo '    Usage:' $0 PERIOD 
-    echo 
-    echo '      Example: bash' $0 '"20211214_100000|20211214_200000"' 
-    echo 
-    echo '    Notice: The script ignores the results of the latest round if the given period contains the latest time'
-    echo 
-    exit 1
+        echo
+        echo '    Usage:' $0 PERIOD
+        echo
+        echo '      Example: bash' $0 '"20211214_100000|20211215_200000"'
+        echo
+        echo '      Example: bash' $0 '"20211214|20211215"'
+        echo
+        exit 1
     }
     begin=
     begin_date=
@@ -90,10 +100,13 @@ main(){
     files=
     primary_file=
     latest_file=
+    latest_file_with_ending=
     period=
     file=
     preprocess $@
     files=`get_files $begin_date $end_date `
+    latest_file_with_ending=`generate_ending $end_date $files`
+    files=`echo $files | awk -v latest_file=$latest_file_with_ending '{$NF="";print $0 " " latest_file}'`
     file=`generate_data $files`
     [[ ! -s $file ]] && {
         echo '{"Data is empty": "Error: '$0::$LINENO'"}'
@@ -104,6 +117,7 @@ main(){
     period=`get_period $primary_file $begin_date $begin_time $latest_file $end_date $end_time $file`
     process $period $file
     rm $file
+    rm $latest_file_with_ending
     # echo begin=$begin
     # echo begin_date=$begin_date
     # echo begin_time=$begin_time
