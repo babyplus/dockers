@@ -17,16 +17,21 @@ toolbox:
       title:
         line: Line
         bar: Bar
-        stack: Stack
-        tiled: Tiled
+#        stack: Stack
+#        tiled: Tiled
       type:
         - line
         - bar
-        - stack
-        - tiled
-    restore:
+#        - stack
+#        - tiled
+    myTool1:
+      onclick:
       show: true
-      title: Restore
+      title: "filter"
+      icon: image://../static/images/a-filter-svgrepo-com1.png
+#    restore:
+#      show: true
+#      title: Restore
     saveAsImage:
       show: true
       title: Save Image
