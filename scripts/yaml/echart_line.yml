@@ -27,8 +27,13 @@ toolbox:
     myTool1:
       onclick:
       show: true
-      title: "filter"
-      icon: image://../static/images/a-filter-svgrepo-com1.png
+      title: "Quick tampering"
+      icon: image://../static/images/tampering.png
+    myTool2:
+      onclick:
+      show: true
+      title: "Advanced tampering"
+      icon: image://../static/images/advanced_tampering.png
 #    restore:
 #      show: true
 #      title: Restore
