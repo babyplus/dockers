@@ -1,0 +1,11 @@
+---
+  - include: base_ping.yml
+  - shell: "cat {{ latest_result_file }}"
+    register: latest_result_file_lines
+  - set_fact:
+      latest_result_file_yaml: "{{ latest_result_file_lines.stdout | from_yaml }}"
+  - shell: "sudo docker run -it --network host --rm redis redis-cli PUBLISH {{ channel }} {{ item.host }}"
+    with_items: "{{ latest_result_file_yaml[0].results }}"
+    when:  0 == item.rc
+  - pause:
+      seconds: "{{ ping_interval }}"

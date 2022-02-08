@@ -2,9 +2,10 @@
 - hosts: master
   vars_files:
   - common_ping.config
+  - redis_ping.config
   gather_facts: no
   tasks:
-  - include: ping.yml
+  - include: ping_and_publish_via_redis.yml 
     loop: "{{ cycle_control }}"
     loop_control:
         loop_var: round
