@@ -41,7 +41,7 @@ cd scripts
 nohup bash repeated_ping.sh &>/dev/null &  
 ```
 
-# repeated ping via publish via redis 
+# repeated ping and publish via redis 
 
 ## deployment  
 
