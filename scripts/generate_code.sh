@@ -16,6 +16,9 @@ cd $path/$project
 echo >> Dockerfile
 echo 'RUN apk add --no-cache bash' >> Dockerfile
 echo >> Dockerfile
+sed 's/Flask == 1.1.2/Flask==1.1.4/g' requirements.txt -i
+echo >> requirements.txt
+echo markupsafe==2.0.1 >> requirements.txt
 echo >> requirements.txt
 echo 'waitress >= 2.0.0' >> requirements.txt
 cat $path/scripts/customization/__main__.py > __main__.py
