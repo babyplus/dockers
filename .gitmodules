@@ -1,0 +1,25 @@
+[submodule "nginx_reverse_proxy"]
+	path = nginx_reverse_proxy
+	url = git@github.com:babyplus/dockers.git
+	branch = nginx_reverse_proxy
+[submodule "openapi_ping_test"]
+	path = openapi_ping_test
+	url = git@github.com:babyplus/dockers.git
+	branch = openapi_ping_test
+[submodule "ansible_ping_test"]
+	path = ansible_ping_test
+	url = git@github.com:babyplus/dockers.git
+	branch = ansible_ping_test
+[submodule "python_http_server"]
+	path = python_http_server
+	url = git@github.com:babyplus/dockers.git
+	branch = python_http_server
+[submodule "echarts-node-export-client"]
+	path = echarts-node-export-client
+	url = git@github.com:babyplus/echarts-node-export-client.git
+[submodule "echarts-node-export-server"]
+	path = echarts-node-export-server
+	url = git@github.com:babyplus/echarts-node-export-server.git
+[submodule "flask-gentelella"]
+	path = flask-gentelella
+	url = git@github.com:babyplus/flask-gentelella.git
