@@ -1,6 +1,7 @@
 path="`pwd`"
 path=${path%/*}
 docker_image=openapitools/openapi-generator-cli:v5.2.0
+target_image=${1:-openapi_server}
 project="project"
 project_yaml=$project.yaml
 workdir="/local"
@@ -23,7 +24,7 @@ echo >> requirements.txt
 echo 'waitress >= 2.0.0' >> requirements.txt
 cat $path/scripts/customization/__main__.py > __main__.py
 cat $path/scripts/customization/__main__.py > openapi_server/__main__.py
-docker build -t openapi_server .
+docker build -t $target_image .
 
 #go back to the scripts` dir
 cd $path/scripts

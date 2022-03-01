@@ -5,6 +5,8 @@ docker run -it --network host --rm redis redis-cli ping | grep PONG
     echo Redis is not working properly.
     exit 1
 }
-bash generate_code.sh &&\
+
+image="${1:-openapi_server}"
+bash generate_code.sh $image &&\
 bash extend_code.sh &&\
-bash test_code.sh
+bash test_code.sh $image

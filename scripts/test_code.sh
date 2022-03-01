@@ -6,7 +6,7 @@ latest_data_file="$mount_path/test_latest.txt"
 history_data_file=""
 path="`pwd`"
 path=${path%/*}
-docker_image=openapi_server
+docker_image=${1:-openapi_server}
 project="project"
 
 create_mock_data(){
@@ -53,4 +53,4 @@ cp -r $path/scripts/yaml/* $mount_path/yaml
 # run
 cd $path/$project
 echo "running..."
-docker run -v $mount_path:/tmp -v $path/$project/openapi_server:/usr/src/app/openapi_server -p 8080:8080 $docker_image
+docker run -d -v $mount_path:/tmp -v $path/$project/openapi_server:/usr/src/app/openapi_server -p 8080:8080 $docker_image
