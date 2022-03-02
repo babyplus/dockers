@@ -1,5 +1,5 @@
 export TZ="Asia/Shanghai"
-mount_path="/tmp"
+mount_path="${2:-/tmp}"
 date=`date +%Y%m%d`
 today_data_file="$mount_path/test_$date.txt"
 latest_data_file="$mount_path/test_latest.txt"
