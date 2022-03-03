@@ -15,7 +15,10 @@ docker run --rm -v "${path}:$workdir" $docker_image generate -i $workdir/$projec
 # build project docker image
 cd $path/$project
 echo >> Dockerfile
+echo >> Dockerfile
 echo 'RUN apk add --no-cache bash' >> Dockerfile
+echo >> Dockerfile
+echo 'RUN apk add --no-cache docker' >> Dockerfile
 echo >> Dockerfile
 sed 's/Flask == 1.1.2/Flask==1.1.4/g' requirements.txt -i
 echo >> requirements.txt
