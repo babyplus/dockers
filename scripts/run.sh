@@ -35,6 +35,9 @@ rc=$?
 cd $original_path/$exec_path
 cd ../echarts-node-export-client/scripts
 bash build.sh export-client:$version
+cd ..
+export_client_path="`pwd`"
+third_party_0=export_client:$export_client_path/scripts
 # Nothing to do 
 
 # echarts-node-export-server
@@ -57,7 +60,7 @@ bash run.sh
 # openapi_ping_test
 cd $original_path/$exec_path
 cd ../openapi_ping_test/scripts
-bash run.sh openapi_server:$version $data_path
+bash run.sh openapi_server:$version $data_path $third_party_0
 
 # python_http_server
 cd $original_path/$exec_path

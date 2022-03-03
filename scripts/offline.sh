@@ -38,6 +38,10 @@ rc=$?
 }
 
 # echarts-node-export-client
+cd $original_path/$exec_path
+cd ../echarts-node-export-client
+export_client_path="`pwd`"
+third_party_0=export_client:$export_client_path/scripts
 # Nothing to do.
 
 # echarts-node-export-server
@@ -63,7 +67,7 @@ path="`pwd`"
 path=${path%/*}
 docker run --rm -v "${path}:/local" openapitools/openapi-generator-cli:v5.2.0 generate -i /local/project.yaml  -g python-flask -o /local/project
 bash extend_code.sh
-bash service.sh openapi_server:$version $data_path
+bash service.sh openapi_server:$version $data_path $third_party_0
 
 # python_http_server
 cd $original_path/$exec_path
