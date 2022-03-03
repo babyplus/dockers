@@ -1,12 +1,24 @@
+[ 2 -le $# ] || {
+    echo Usage: $0 IMAGE DATA_PATH [THIRD_PARTY...]
+    exit 1
+}
+
 export TZ="Asia/Shanghai"
-mount_path="${2:-/tmp}"
+docker_image="$1"
+mount_path="$2"
+shift 2
+third_parties=($@)
+third_party=""
+for tp in ${third_parties[@]}
+do
+    third_party=`echo ' -v '${tp##*:}':/usr/src/app/openapi_server/ex_package/third_party/'${tp%%:*} `$third_party
+done
 date=`date +%Y%m%d`
 today_data_file="$mount_path/test_$date.txt"
 latest_data_file="$mount_path/test_latest.txt"
 history_data_file=""
 path="`pwd`"
 path=${path%/*}
-docker_image=${1:-openapi_server}
 project="project"
 
 create_mock_data(){
@@ -53,4 +65,4 @@ cp -r $path/scripts/yaml/* $mount_path/yaml
 # run
 cd $path/$project
 echo "running..."
-docker run -d --rm -v $mount_path:/tmp -v $path/$project/openapi_server:/usr/src/app/openapi_server  -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 $docker_image
+docker run -d --rm -v $mount_path:/tmp -v $path/$project/openapi_server:/usr/src/app/openapi_server  -v /var/run/docker.sock:/var/run/docker.sock $third_party -p 8080:8080 $docker_image
