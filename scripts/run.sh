@@ -6,7 +6,7 @@ data_path=${1:-/tmp}
 
 # redis
 docker rm redis
-docker run -p 127.0.0.1:6379:6379 --name redis -d redis redis-server --save 60 1 --loglevel warning
+docker run --rm -p 127.0.0.1:6379:6379 --name redis -d redis redis-server --save 60 1 --loglevel warning
 docker run -it --network host --rm redis redis-cli ping | grep PONG
 [ 0 -eq $? ] || {
     echo Redis is not working properly.
@@ -29,6 +29,7 @@ rc=$?
 }
 [ 0 -eq $rc ] && {
     nohup bash repeated_ping.sh ansible_ping_test:$version &>/dev/null &
+    #bash repeated_ping.sh ansible_ping_test:$version
 }
 
 # echarts-node-export-client

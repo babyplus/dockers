@@ -7,12 +7,12 @@ version="$2"
 original_path=`pwd`
 exec_path=`dirname $0`
 
-data_path=${1:-/tmp}
+data_path=$1
 mkdir -p $data_path
 
 # redis
 docker rm redis
-docker run -p 127.0.0.1:6379:6379 --name redis -d redis redis-server --save 60 1 --loglevel warning
+docker run --rm -p 127.0.0.1:6379:6379 --name redis -d redis redis-server --save 60 1 --loglevel warning
 docker run -it --network host --rm redis redis-cli ping | grep PONG
 [ 0 -eq $? ] || {
     echo Redis is not working properly.
