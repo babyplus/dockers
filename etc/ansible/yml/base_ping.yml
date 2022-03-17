@@ -1,6 +1,8 @@
 ---
+  - shell: "TZ=Asia/Shanghai date +%Y%m%d_%H%M%S"
+    register: _current_time
   - set_fact:
-      current_time: "{{ lookup('pipe', 'date +%Y%m%d_%H%M%S') }}"
+      current_time: "{{ _current_time.stdout }}"
   - set_fact:
       date: "{{ current_time.split(\"_\")[0] }}"
   - set_fact:
