@@ -7,7 +7,7 @@
       date: "{{ current_time.split(\"_\")[0] }}"
   - set_fact:
       result_file: "{{ result_file_path }}/{{ result_file_prefix }}{{ date }}.txt"
-  - shell: ping {{ item }} -c 1 -W 10
+  - shell: ping {{ item }} -c 1 -W 5
     register: "pong"
     with_items: "{{ peers }}"
     ignore_errors: true
