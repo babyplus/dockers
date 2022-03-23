@@ -1,0 +1,5 @@
+# docker run -it --network host --rm redis redis-cli publish CHANNEL_TEST "20220323 192.168.56.1 -p2222 echo";
+date=$1
+host=$2
+shift 2
+sshpass -p 'password' ssh -o StrictHostKeyChecking=no $host $@ $date
