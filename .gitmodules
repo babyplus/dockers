@@ -23,3 +23,7 @@
 [submodule "flask-gentelella"]
 	path = flask-gentelella
 	url = git@github.com:babyplus/flask-gentelella.git
+[submodule "subscriber"]
+	path = subscriber
+	url = git@github.com:babyplus/dockers.git
+	branch = subscriber

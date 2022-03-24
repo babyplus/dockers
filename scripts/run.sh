@@ -28,7 +28,7 @@ rc=$?
     echo "ansible_ping_test: The script is already running"
 }
 [ 0 -eq $rc ] && {
-    nohup bash repeated_ping.sh ansible_ping_test:$version &>/dev/null &
+    nohup bash repeated_ping_and_publish_via_redis.sh ansible_ping_test:$version &>/dev/null &
     #bash repeated_ping.sh ansible_ping_test:$version
 }
 
@@ -67,5 +67,12 @@ bash run.sh openapi_server:$version $data_path $third_party_0
 cd $original_path/$exec_path
 cd ../python_http_server
 bash run.sh $data_path
+
+# subscriber
+cd $original_path/$exec_path
+cd ../subscriber
+echo 'echo $@' > plugins/CHANNEL_ONLINE
+docker build -t subscriber .
+docker run -v /root/.ssh:/root/.ssh --net host -it --rm subscriber subscribe CHANNEL_ONLINE 127.0.0.1
 
 cd $original_path
