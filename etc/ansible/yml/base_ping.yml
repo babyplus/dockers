@@ -1,5 +1,5 @@
 ---
-  - shell: "TZ=Asia/Shanghai date +%Y%m%d_%H%M%S"
+  - shell: "TZ={{ timezone }} date +%Y%m%d_%H%M%S"
     register: _current_time
   - set_fact:
       current_time: "{{ _current_time.stdout }}"
