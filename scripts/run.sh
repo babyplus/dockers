@@ -71,8 +71,12 @@ bash run.sh $data_path
 # subscriber
 cd $original_path/$exec_path
 cd ../subscriber
-echo 'echo $@' > plugins/CHANNEL_ONLINE
+[ -f ../custom/CHANNEL_ONLINE ] && {
+    cp ../custom/CHANNEL_ONLINE plugins/CHANNEL_ONLINE
+} || {
+    echo 'echo $@' > plugins/CHANNEL_ONLINE
+}
 docker build -t subscriber .
-docker run -v /root/.ssh:/root/.ssh --net host -it --rm subscriber subscribe CHANNEL_ONLINE 127.0.0.1
+docker run -v $data_path:/tmp -v /root/.ssh:/root/.ssh --net host -it --rm subscriber subscribe CHANNEL_ONLINE 127.0.0.1
 
 cd $original_path
