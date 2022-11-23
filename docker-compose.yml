@@ -1,0 +1,35 @@
+version: "3.0"
+services:
+  ansible-ping:
+    image: registry.cn-hangzhou.aliyuncs.com/babyplus/get:b2211236e356.my_ansible.0_0_1
+    depends_on:
+      - redis
+    hostname: ansible-ping
+    networks:
+      extnetwork:
+        ipv4_address: 172.19.0.3
+    links:
+      - redis
+    working_dir: /etc/ansible/yml
+    volumes:
+      - /root/projects/dockers/ansible_ping_test/etc/ansible:/etc/ansible
+    command: ansible-playbook repeated_ping_and_publish_via_redis.yml
+    restart: always
+
+  redis:
+    image: registry.cn-hangzhou.aliyuncs.com/babyplus/get:a221122cb163.redis.6_2_7
+    command: redis-server --requirepass "F31Vl%SE"
+    ports:
+      - "6379:6379"
+    expose:
+      - 6379
+    hostname: redis
+    networks:
+      extnetwork:
+        ipv4_address: 172.19.0.4
+
+networks:
+  extnetwork:
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
